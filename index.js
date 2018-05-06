@@ -1,6 +1,7 @@
 const cool = require('cool-ascii-faces')
 const express = require('express')
 const path = require('path')
+const sha256 = require('sha256')
 const { Pool } = require('pg')
 const PORT = process.env.PORT || 5000
 
@@ -10,6 +11,50 @@ const pool = new Pool({
 })
 
 const bodyParser = require('body-parser')
+
+const difficultyTarget = 5;
+const jobs = [
+  {
+    jobId: 1,
+    clientId: 1,
+    blockHeader: {
+      version: 2,
+      prevBlockhash: "00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81",
+      merkleRoot: "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3",
+      timestamp: 1305998791,
+      difficultyTarget: 17,
+      Nonce: 2504433986,
+      blockHash: "myhash"
+    }
+  }
+]
+
+const clients = [
+  {
+    id: 1,
+    name: "samsung galaxy"
+  }
+]
+
+function incrementNonce(job) {
+  job.blockHeader.Nonce += 1
+}
+
+function generatePuzzle(clientId, prevBlockhash) {
+  const puzzle = {
+    jobId: jobs.length,
+    clientId: clientId,
+    blockHeader: {
+      version: 2,
+      prevBlockhash: prevBlockhash,
+      merkleRoot: sha256('concatenated transaction hashes'),
+      timestamp: (new Date).getTime(),
+      difficultyTarget: difficultyTarget,
+      Nonce: 0,
+    }
+  }
+  return puzzle;
+}
 
 express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -39,19 +84,14 @@ express()
     }
   })
   .get('/work', async (req, res) => {
-    const dummy = {
-      jobId: 2,
-      clientId: 5,
-      blockHeader: {
-        version: 2,
-        prevBlockhash: "00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81",
-        merkleRoot: "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3",
-        timestamp: 1305998791,
-        difficultyTarget: 17,
-        Nonce: 2504433986
-      }
+    var job = jobs[jobs.length - 1]
+    if ('blockHash' in job.blockHeader) {
+      job = generatePuzzle(1, job.blockHeader.blockHash)
+      jobs.push(job)
+    } else {
+      incrementNonce(job)
     }
-    res.send(JSON.stringify(dummy))
+    res.send(JSON.stringify(job))
   })
   .post('/submit', (req, res) => {
     res.send('submitted')
