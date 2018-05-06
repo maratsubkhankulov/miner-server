@@ -3,13 +3,18 @@ const express = require('express')
 const path = require('path')
 const { Pool } = require('pg')
 const PORT = process.env.PORT || 5000
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: false
 })
 
+const bodyParser = require('body-parser')
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(bodyParser.urlencoded({ extended: true}))
+  .use(bodyParser.json())
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
   .get('/', (req, res) => res.render('pages/index'))
@@ -32,5 +37,23 @@ express()
       console.error(err)
       res.send('Error: ' + err)
     }
+  })
+  .get('/work', async (req, res) => {
+    const dummy = {
+      jobId: 2,
+      clientId: 5,
+      blockHeader: {
+        version: 2,
+        prevBlockhash: "00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81",
+        merkleRoot: "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3",
+        timestamp: 1305998791,
+        difficultyTarget: 17,
+        Nonce: 2504433986
+      }
+    }
+    res.send(JSON.stringify(dummy))
+  })
+  .post('/submit', (req, res) => {
+    res.send('submitted')
   })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
