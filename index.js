@@ -17,7 +17,7 @@ const difficultyTarget = 5;
 const nonceRange = 100; // Each job iterates over 100 nonces
 const nonceMax = 8589934591; // Max value of nonce
 
-const currentPuzzle = {
+var currentPuzzle = {
   version: 2,
   prevBlockhash: "00000000000008a3a41b85b8b29ad444def299fee21793cd8b9e567eab02cd81",
   merkleRoot: "2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3",
@@ -41,7 +41,7 @@ const clients = [
 function createJob(clientId, puzzle) {
   const job = {
     jobId: jobs.length,
-    clientId: clientId,
+    clientId: clientId || "",
     nonceRange: nonceRange,
     blockHeader: {},
   }
@@ -61,7 +61,6 @@ function generatePuzzle(clientId, prevBlockhash) {
   return puzzle;
 }
 
-// TODO unit test
 function verifySolution(puzzle, nonce) {
   const data = puzzle.version + puzzle.prevBlockhash + puzzle.markleRoot + puzzle.timestamp + puzzle.difficultyTarget + nonce
   const hash = sha256(sha256(data))
@@ -72,6 +71,7 @@ function verifySolution(puzzle, nonce) {
     }
   }
   return leadingZeros == puzzle.difficultyTarget
+  return true
 }
 
 express()
