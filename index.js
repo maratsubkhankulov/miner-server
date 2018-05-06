@@ -56,4 +56,10 @@ express()
   .post('/submit', (req, res) => {
     res.send('submitted')
   })
+  .post('/tokens', (req, res) => {
+    const token = {
+      'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c'
+    }
+    res.send(JSON.stringify(token))
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
