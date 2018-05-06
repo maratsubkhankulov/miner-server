@@ -5,7 +5,7 @@ const { Pool } = require('pg')
 const PORT = process.env.PORT || 5000
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: true
+  ssl: false
 })
 
 express()
