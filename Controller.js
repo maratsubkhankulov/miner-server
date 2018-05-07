@@ -1,6 +1,5 @@
 const sha256 = require('sha256')
 
-
 class Controller {
   constructor() {
     this.difficultyTarget = 5;
