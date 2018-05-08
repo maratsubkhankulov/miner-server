@@ -1,4 +1,4 @@
-# Distributed bitcoin mining Server
+# Distributed bitcoin mining server
 
 This server distributes hashcash computations among a number of clients by
 providing the proof-of-work puzzle and starting nonce. It doesn't track client
@@ -7,6 +7,8 @@ hashes for nonces in a given range and are expected to call /submit when a
 successful nonce has been found.
 
 Client implementation can be found here: https://github.com/maratsubkhankulov/miner-client
+
+_This is a work in progress_
 
 # Try it
 
