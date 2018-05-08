@@ -14,13 +14,12 @@ At the time of writing the code was hosted at https://frozen-refuge-70388.heroku
 
 # Endpoints
 
-GET /work
+## GET /work
 ```
-<empty>
 ```
 
 ```
-200
+HTTP 200
 {
   "jobId": 1,
   "clientId": 2,
@@ -36,7 +35,7 @@ GET /work
 }
 ```
 
-POST /submit
+## POST /submit
 ```
 {
   "nonce": 2504433986
@@ -44,7 +43,7 @@ POST /submit
 ```
 
 ```
-200
+HTTP 200
 {
   "correctSolution": false
 }
@@ -52,7 +51,7 @@ POST /submit
 
 # To do
 
-[] Verify that submitted nonce is a valid solution
-[] Authentication: allow clients to login and track their sessions
-[] Authentication: authenticate API calls
-[] Obtain blockHeader from the real bitcoin network
+- [ ] Verify that submitted nonce is a valid solution
+- [ ] Authentication: allow clients to login and track their sessions
+- [ ] Authentication: authenticate API calls
+- [ ] Obtain blockHeader from the real bitcoin network
